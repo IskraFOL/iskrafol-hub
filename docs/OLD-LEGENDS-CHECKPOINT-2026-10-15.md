@@ -420,3 +420,28 @@
 - Следующий шаг: скачать/изучить артефакт #3, определить фактическое состояние изображения и ошибку/успех клиента. Затем менять workflow на основании диагностики, не повторять одинаковые тесты без изменений.
 - Road fix builds #67/#68 на том же коммите завершились успешно; Minecraft client smoke test #28 проверяется отдельно.
 - PR #9 остаётся draft и не слит в `main`.
+
+
+## 21. Диагностика чёрной видеозаписи и исправление окружения — 15 октября 2026 года
+
+После загрузки и непосредственного просмотра артефакта видеотеста #3 установлено, что `video/last-frame.png` полностью чёрный. В логе `gradle-runClient.log` клиент успевает загрузить Fabric и Old Legends, затем падает на создании графического backend:
+
+- `Failed to create backend OpenGL`
+- `Failed to create window for OpenGL context: Couldn't find matching GLX visual`
+- fallback на Vulkan тоже не работает: `VK_KHR_surface` не поддерживается установленной headless-конфигурацией.
+- `client-exit-code.txt = 124` — Gradle-процесс остановлен timeout; `recorder-exit-code.txt = 255` — запись остановлена сигналом, что само по себе не подтверждает валидность видео.
+- Причина не в отсутствии OpenGL вообще: GLX сообщает Mesa `llvmpipe`, OpenGL 4.5. Проблема в создании подходящего контекста/визуала SDL3/Minecraft 26.3.
+
+Сопоставление с [Minecraft client smoke test #28](https://github.com/Anwite/four_old_legends/actions/runs/38799937229) показало, что в другом workflow Minecraft смог создать окно на OpenGL через набор переменных:
+`JAVA_TOOL_OPTIONS=-Dorg.lwjgl.opengl.contextAPI=native`,
+`SDL_VIDEODRIVER=x11`,
+`SDL_VIDEO_FORCE_EGL=0`,
+`SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER=0`,
+`GALLIUM_DRIVER=llvmpipe`,
+а также headless audio variables. Эти параметры перенесены в виде workflow.
+
+- Новый коммит workflow: [`9d6a53a`](https://github.com/Anwite/four_old_legends/commit/9d6a53acbf6201ad756b6565fa261e2fc3c17b91).
+- Видеотест #4: [run 38801166174](https://github.com/Anwite/four_old_legends/actions/runs/38801166174) — запущен на новом коммите; результат ожидается.
+- В проверку кадра добавлена оценка разброса пикселей (stddev) и экстремумов каналов через Pillow: тест должен завершаться ошибкой на чёрном/пустом кадре, а не принимать его из-за небольшой яркости шумов.
+- Текущий результат #3 не считается успешной записью Minecraft. Подтверждено только создание MP4-контейнера и диагностических файлов.
+- PR #9 остаётся draft, без слияния в `main`.
