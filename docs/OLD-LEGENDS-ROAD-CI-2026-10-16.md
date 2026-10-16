@@ -61,3 +61,10 @@
 - Ключевое ограничение: `04-world-type-after-click.png` по-прежнему показывает `World Type: Default`. Предыдущий синтетический клик не переключил генерацию; `WORLD_TYPE_OCR=NOT_CONFIRMED_REVIEW_SCREENSHOT`. Дорога частично видна, но рельеф мешает достоверно проверить стыки.
 - В коммите [`8664bdc`](https://github.com/Anwite/four_old_legends/commit/8664bdcc9cdcfe20f522f77a117102749ae1ad5f) клик заменён явными `mousedown`/`mouseup`, добавлена увеличенная область кнопки для OCR.
 - Зарегистрирован [run #41 / 38881187953](https://github.com/Anwite/four_old_legends/actions/runs/38881187953); на момент записи он выполнялся. Superflat и целостность стыков ещё не подтверждены. PR #10 остаётся draft, Java/NBT не менялись, слияний нет.
+
+## Проверка #41 и следующий тест #43 — 16 октября 2026
+
+- [GitHub Actions #41, run 38881187953](https://github.com/Anwite/four_old_legends/actions/runs/38881187953) — `success`; артефакт [12037817416](https://github.com/Anwite/four_old_legends/actions/runs/38881187953/artifacts/12037817416). В `result.txt`: `BENCH_POINTS_FROM_LOG=7`, семь `AERIAL_CAPTURE`, `ROAD_TEST_COMPLETED_CONFIRMED_BY_MINECRAFT_CHAT_LOG=1`.
+- Однако скриншот `04-world-type-after-click.png` по-прежнему показывает **World Type: Default**. Таким образом, клики относительно окна не переключили тип мира; качества всех стыков нельзя подтвердить.
+- На изображении #41 кнопка World Type расположена по координатам root X=330..628 и Y=343..381, центр (480,362). Коммит [`f2393b6`](https://github.com/Anwite/four_old_legends/commit/f2393b6fdb93a4d6cacc6d8d48f64fc7f0aae068) переводит нажатие на эти абсолютные координаты, сохраняя снимок и OCR.
+- Зарегистрирован [GitHub Actions #43, run 38884410429](https://github.com/Anwite/four_old_legends/actions/runs/38884410429), при проверке `queued`. Superflat пока не подтверждён. Исходники Java/NBT не менялись, PR #10 остаётся draft и не слит.
