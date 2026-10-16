@@ -564,3 +564,37 @@
 2. Если достигнуто главное меню, следующим отдельным этапом автоматизировать вход в одиночный мир с включёнными читами; только затем запускать `/legends road test`.
 3. При подготовке обновления сверить свежую статистику скачиваний и сделать благодарственную карточку/эмблему.
 
+## 25. Контрольная точка — 16 октября 2026 года: подтверждён переход к экрану создания мира
+
+### Репозиторий и состояние ветки
+
+- **Репозиторий:** [Anwite/four_old_legends](https://github.com/Anwite/four_old_legends).
+- **Ветка:** `fix/road-rotation-anchor-main-2026-10-15`.
+- **Коммит:** [`93cd30b3746be8af8dba36d1e89f0115b73d8930`](https://github.com/Anwite/four_old_legends/commit/93cd30b3746be8af8dba36d1e89f0115b73d8930), `Verify Singleplayer world selection transition`.
+- **PR № 9:** [Fix road structure rotation anchor compensation](https://github.com/Anwite/four_old_legends/pull/9) остаётся draft и не слит в `main`.
+
+### Проверки GitHub Actions
+
+На коммите `93cd30b` завершились с результатом `success` все четыре проверочных workflow:
+
+- [Minecraft client smoke test — run 38859668899](https://github.com/Anwite/four_old_legends/actions/runs/38859668899).
+- [Road fix — remote build — run 38859668893](https://github.com/Anwite/four_old_legends/actions/runs/38859668893) и повторный [run 38859675386](https://github.com/Anwite/four_old_legends/actions/runs/38859675386).
+- [Minecraft menu automation probe — run 38859668878](https://github.com/Anwite/four_old_legends/actions/runs/38859668878).
+- [Minecraft client video smoke test — run 38859668859](https://github.com/Anwite/four_old_legends/actions/runs/38859668859).
+
+Артефакт probe: [minecraft-menu-probe-evidence, ID 12028911757](https://github.com/Anwite/four_old_legends/actions/runs/38859668878/artifacts/12028911757). Файл `result.txt` сообщает `WORLD_SELECTION_UNCONFIRMED` и `UNDETERMINED_CHECK_SCREENSHOTS`, поскольку OCR не смог уверенно распознать текст. Поэтому текстовая классификация сама по себе не считается доказательством перехода.
+
+### Визуально подтверждённый результат
+
+Ручной осмотр `04-world-selection.png` из артефакта показал настоящий интерфейс Minecraft Java Edition 26.3 — экран создания одиночного мира с вкладками Game / World / More, полем World Name и кнопкой Create New World. Следовательно, автоматизация успешно прошла экран приветствия, открыла главное меню и нажала Singleplayer; в данной версии игры это привело непосредственно к настройке нового мира. Снимок — более надёжное подтверждение этого перехода, чем неудачная OCR-классификация.
+
+**Границы результата:** кнопка `Create New World` не нажималась; мир не создавался и не загружался. Команды в мире и `/legends road test` не запускались. Геометрия дорожных стыков не проверена. Код геометрии и NBT-ассеты в этой контрольной точке не изменялись.
+
+### Следующие действия
+
+1. Обновить меню-probe так, чтобы на экране создания мира явно включать команды/читы и только затем создавать временный тестовый мир; сохранить скриншоты и логи каждого этапа.
+2. Дождаться фактической загрузки мира и подтвердить её по экрану и журналу клиента.
+3. Лишь после подтверждённой загрузки выполнить `/legends road test` и собрать доказательства результата. Не менять формулы геометрии и не сливать PR № 9 до runtime-проверки стыков.
+
+Эта контрольная точка фиксирует прогресс автоматизации интерфейса, а не завершение дорожного исправления.
+
