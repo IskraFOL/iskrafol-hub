@@ -98,3 +98,15 @@
 Слитые дорожные стыки: [PR #23](https://github.com/Anwite/four_old_legends/pull/23), изоляция сохранений: [PR #26](https://github.com/Anwite/four_old_legends/pull/26). Основное имя будущего JAR на текущем `version=1.2.0`: `four-old-legends-1.2.0.jar`; настройки Minecraft 26.3 / Java 25 не менялись.
 
 **Ограничения:** закрытие старого draft PR не удаляет ветку и не означает, что все перечисленные в нём игровые риски проверены. Автоматическая миграция координат старого `RoadEnd.pos` и перенос полного PR #4 не проводились. Пользовательские миры не изменялись удалёнными CI-сценариями.
+
+
+## КТ — безопасное Забвение прошло реальные игровые проверки и слито (16.10.2026)
+
+- ✅ [PR #38](https://github.com/Anwite/four_old_legends/pull/38) **MERGED** в актуальный `main`, squash `ddb79940dcec5f9cb3cb30b0d36a5c2565368225`. Из первоначального аудита [#20](https://github.com/Anwite/four_old_legends/pull/20) выборочно перенесены **только четыре production-файла**: `OblivionDirector`, `LegendConfig`, `en_us.json`, `ru_ru.json`.
+- По умолчанию `oblivionEraseBlocks=false`; звуки, частицы и NPC проявления продолжаются без физического разрушения. Реальное удаление обычных блоков разрешается только после явной пары `allowGriefing=true && oblivionEraseBlocks=true`. RU/EN локализации предупреждают, что сознательный opt-in может затронуть пользовательские vanilla-постройки.
+- ✅ [Minecraft Actions run 38940217902](https://github.com/Anwite/four_old_legends/actions/runs/38940217902), Superflat/Creative, Java 25: `OBLIVION_PROTECT_PLAYER_BLOCKS` — **PASS**, `failures=[]`; `griefing_off_no_block_change=true`, `safe_default_no_block_change=true`, `optin_real_block_change=true`. Реальных проявлений в логе: 3 визуальных, 2 физически изменивших блок.
+- ✅ [Java 25 / Minecraft 26.3 build run 38941742344](https://github.com/Anwite/four_old_legends/actions/runs/38941742344) — **success** уже на чистом PR #38 поверх дорожных слияний #32/#35.
+- Экспериментальные PR #20, #21, #29, #34 закрыты с пояснением **superseded**; старые diagnostic команды и workflow не вошли в релизный `main`. Ошибочные первые игровые прогоны были обусловлены загрязнением теста Legendary Meeting и коротким окном, когда настройки временно разрешали оба флага стирания. После правильной изоляции тест прошёл.
+- Остаются отдельными задачами: персистентные отложенные предметы `ItemHaunt`, восстановление сцен из PR #4 и проверка жизненного цикла временных NPC из [production PR #31](https://github.com/Anwite/four_old_legends/pull/31) / [test PR #37](https://github.com/Anwite/four_old_legends/pull/37). Ни один из этих непроверенных поднаборов не объявлен слитым.
+
+**Тестовый предел:** PASS подтверждает поведение в контролируемом одноразовом мире и условия явного opt-in; он не утверждает полную безопасность произвольного мира, если пользователь намеренно разрешил физическое стирание.
