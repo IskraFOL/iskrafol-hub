@@ -209,3 +209,13 @@
 - `road-variants-report.json`: `bridge=true`, `five_straights=true`, `left_corner=true`, `failures=[]`, `verdict=PASS`.
 - Правые углы по-прежнему `ALLOW_RIGHT_TURNS=false`, файла `road_corner_right.nbt` нет. Это отдельная **не завершённая** работа, несмотря на успешную проверку debug-угла. Нельзя объявлять всю дорожную систему закрытой.
 - Перед релизом 2.0.0 остались: правый угол/фонари, поведение на разнообразном рельефе и настоящих реках, совместимость старых дорожных сохранений, автоматическая продолжительность работы у границ незагруженных чанков. PR №9–14 **не сливались**.
+
+## ✅ Контрольная точка: один и тот же мир пережил Save & Quit / Reload (16.10.2026)
+
+- После исправления диагностического ограничения `find -maxdepth 5`, которое ложно скрывало файл, проверка [GitHub Actions run 38901063381](https://github.com/Anwite/four_old_legends/actions/runs/38901063381) успешно завершилась. [Артефакт 12046177283](https://github.com/Anwite/four_old_legends/actions/runs/38901063381/artifacts/12046177283), `road-reload-report.json` — `verdict=PASS`, `failures=[]`.
+- Реальный путь SavedData в Minecraft 26.3: `run/saves/FOL_CI_RoadProbe/dimensions/minecraft/overworld/data/oldlegends/arg_state.dat` (новый, отдельно созданный в GitHub Runner мир).
+- **До штатного выхода:** `BEFORE_SAVE tension=14 occupied=33 ends=1 endKeys=-5,-60,-8,west,2,0`, серверная стадия ~2978 тиков.
+- Клиент выполнил **Save and Quit to Title**; лог подтверждает `состояние ARG сохранено в мир`, `Stopping server`, `Stopping singleplayer server as player logged out`, запись чанков.
+- **После открытия того же мира**: `AFTER_RELOAD tension=14 occupied=33 ends=1 endKeys=-5,-60,-8,west,2,0`; новый серверный счётчик ~700 тиков. Журнал содержит **два** `состояние ARG загружено из мира` до/после перезапуска.
+- **Вывод:** новая дорожная сеть, напряжение и координаты активного конца переживают холодную перезагрузку встроенного сервера. Это **не** доказывает совместимость старых координат до рефакторинга `RoadEnd.pos`; отдельный риск остаётся.
+- При первичной неудачной диагностике [run 38899953547](https://github.com/Anwite/four_old_legends/actions/runs/38899953547) ошибка `FAIL_NO_SAVED_DATA` была вызвана недостаточной глубиной поиска, а не доказанной потерей данных.
