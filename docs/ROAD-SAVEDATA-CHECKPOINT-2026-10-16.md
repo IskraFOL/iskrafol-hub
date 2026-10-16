@@ -48,3 +48,12 @@
 
 - [Обновлённый игровой тест](https://github.com/Anwite/four_old_legends/pull/34) изолирован от других легенд. Старый [run 38907992462](https://github.com/Anwite/four_old_legends/actions/runs/38907992462) провалился **в условиях смешанного сценария**: tension 99 активировало Legendary Meeting и конфликт, изменившие контрольную площадку; маркеров `FOL_OBLIVION_TEST_ACTED` в логе нет. Поэтому причины неудачи связаны с ненадёжной изоляцией теста; исправность Забвения на основании этого прогона не установлена.
 - Чистая безопасная реализация — [draft PR #29](https://github.com/Anwite/four_old_legends/pull/29), **не в main** до надёжных runtime-результатов. Тестовый PR #34 ни при каких условиях не сливать в релиз.
+
+
+## КТ — естественный посев без принудительной загрузки чанков (16.10.2026)
+
+- ✅ [PR #35](https://github.com/Anwite/four_old_legends/pull/35) **MERGED** в `main`: squash `049f51061046f66f64ad562768f626d52512aec7`. Старый PR #33 заменён чистым переносом на основу после #32; диагностический PR #36 остаётся вне релиза.
+- Исправлены только `seedSomewhere` и `footprintOk` в `RoadDirector`: `level.isLoaded` вызывается перед `RoadBuilder.groundOf` для случайного места и каждой колонны полосы; если чанк выгружен, попытка откладывается вместо запроса высоты.
+- ✅ [Java 25 build](https://github.com/Anwite/four_old_legends/actions/runs/38938810117), [NBT-стыки](https://github.com/Anwite/four_old_legends/actions/runs/38938810120) и [Minecraft 3D-дорожный стенд](https://github.com/Anwite/four_old_legends/actions/runs/38938810151) — **success**.
+- ✅ [Minecraft natural seeding, run 38939109191](https://github.com/Anwite/four_old_legends/actions/runs/38939109191) — **success**, `NATURAL_ROAD_GROWTH_CI`: `verdict=PASS`, `failures=[]`, без `/legends road`. При напряжении 14 сеть оставалась 0; при 15 возникла сама и выросла до 44 клеток; после временного снижения до 14 остановилась, при возврате на 15 выросла до 66.
+- Нет изменений NBT, формата SavedData, старых пользовательских миров, проектной версии 1.2.0. **Не закрытые риски:** геометрическая миграция старых RoadEnd, воспроизводимый тест изоляции двух миров, физический правый поворот (нужен собственный `.nbt`), полноценная проверка Забвения.
