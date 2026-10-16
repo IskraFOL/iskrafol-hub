@@ -144,3 +144,13 @@
 - [Production draft PR #42](https://github.com/Anwite/four_old_legends/pull/42): обе сцены `LegendaryMeetingEvent` и `LikChroniclerEvent` обязаны уважать `allowGriefing=false` при обычном и командном старте, но могут восстановить уже временно заменённые блоки при отключении настройки во время активной сцены.
 - ✅ Java25 сборка [run 38945300892](https://github.com/Anwite/four_old_legends/actions/runs/38945300892) — SUCCESS; [игровая регрессия сцен, test PR #43](https://github.com/Anwite/four_old_legends/pull/43) запущена, статус PASS на момент записи **не подтверждён**. Данные о восстановлении после аварийного завершения НЕ собирались.
 - Исторический `TemporaryBlockRecoveryData` из старого PR #4 пока **не интегрирован**. `SavedData.setDirty()` не обеспечивает немедленную запись оригинальных блоков перед их заменой и поэтому само по себе не гарантирует восстановление после внезапного выключения питания.
+
+
+## КТ — безопасные сюжетные сцены: реальный откат подтверждён (16.10.2026)
+
+- ✅ Чистый [PR #42](https://github.com/Anwite/four_old_legends/pull/42) **MERGED** в актуальный `main`, коммит `67c308538d54b150405bec836939c353db005b2b`. Изменены **только** `LegendaryMeetingEvent.java` и `LikChroniclerEvent.java`.
+- Обе сцены запрещены при `allowGriefing=false`, включая командные `/legends meeting start` и `/legends chronicler start`. Если пользователь выключает настройку уже во время сцены, директор завершает сцену и восстанавливает её временные блоки.
+- ✅ [Java 25 build #38945300892](https://github.com/Anwite/four_old_legends/actions/runs/38945300892) — **success**.
+- ✅ [Настоящий Minecraft 26.3 CI #38946871410](https://github.com/Anwite/four_old_legends/actions/runs/38946871410) — **success, STORY_SCENE_NO_GRIEFING_CI PASS, failures=[]**. При запрете сцен нет; при разрешении реальные структуры заменили **4291** и **1380** блоков соответственно; после отключения режимов независимая проверка `BlockState` показала **0 несовпадений из 4291** и **0 из 1380**, обе сцены неактивны.
+- [Test-only PR #43](https://github.com/Anwite/four_old_legends/pull/43) закрыт как завершённый эксперимент: диагностические команды, snapshot-счётчики и workflow **НЕ попали** в релизный `main`.
+- **Важно:** `crash_recovery_tested=false`. Это проверка штатного завершения/отката, а не персистентного восстановления после краша, отключения питания или выгрузки чанков в момент отката. Исторический журнал `TemporaryBlockRecoveryData` из большого draft #4 всё ещё не интегрирован. Ставить `SavedData.setDirty()` на каждый исходный блок без принудительного надёжного сохранения ДО разрушения — недостаточная гарантия на случай аварии.
