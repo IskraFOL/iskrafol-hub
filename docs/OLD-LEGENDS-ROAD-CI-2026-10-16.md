@@ -54,3 +54,10 @@
 - Изображение `04-world-tab-terrain-options.png` подтверждает экран настройки World в Minecraft 26.3, переключатель `World Type: Default` с центром около root (480,362), окно клиента начинается root (212,252).
 - Коммит [`41934b5`](https://github.com/Anwite/four_old_legends/commit/41934b51990365f200c9acbc394a0a4b79e89bd9) обновил тестовую ветку PR #10: выполняется один клик по World Type и сохраняются новый скриншот и OCR-отчёт о типе мира. Пока Superflat не подтверждён.
 - [Run #39 / 38880177174](https://github.com/Anwite/four_old_legends/actions/runs/38880177174) зарегистрирован, при проверке выполнялся. Следующий шаг — прочесть артефакт, подтвердить Superflat, затем оценивать стыки дороги. NBT и Java не менялись; PR не слиты.
+
+## Прогон #39 и исправление переключателя World Type (16.10.2026)
+
+- [Run #39 / 38880177174](https://github.com/Anwite/four_old_legends/actions/runs/38880177174) завершился успешно. Артефакт [12038035339](https://github.com/Anwite/four_old_legends/actions/runs/38880177174/artifacts/12038035339) подтверждает 7 координат стенда, 7 игровых снимков и сообщение `ROAD_TEST_COMPLETED_CONFIRMED_BY_MINECRAFT_CHAT_LOG=1`.
+- Ключевое ограничение: `04-world-type-after-click.png` по-прежнему показывает `World Type: Default`. Предыдущий синтетический клик не переключил генерацию; `WORLD_TYPE_OCR=NOT_CONFIRMED_REVIEW_SCREENSHOT`. Дорога частично видна, но рельеф мешает достоверно проверить стыки.
+- В коммите [`8664bdc`](https://github.com/Anwite/four_old_legends/commit/8664bdcc9cdcfe20f522f77a117102749ae1ad5f) клик заменён явными `mousedown`/`mouseup`, добавлена увеличенная область кнопки для OCR.
+- Зарегистрирован [run #41 / 38881187953](https://github.com/Anwite/four_old_legends/actions/runs/38881187953); на момент записи он выполнялся. Superflat и целостность стыков ещё не подтверждены. PR #10 остаётся draft, Java/NBT не менялись, слияний нет.
