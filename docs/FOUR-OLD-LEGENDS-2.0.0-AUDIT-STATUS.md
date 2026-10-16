@@ -89,3 +89,10 @@
 - Фактический путь namespaced файла данных: `run/saves/FOL_CI_RoadProbe/dimensions/minecraft/overworld/data/oldlegends/arg_state.dat`. Прежнее ограничение `find -maxdepth 5` скрывало его. Исправленный тест обнаружил файл.
 - **Что проверено:** сохранение и повторный запуск **встроенного сервера в том же JVM/клиенте**. Полный cold restart самого Minecraft-процесса, старые четырёхпольные `RoadEnd`, переход с версии старой геометрии и аварийное завершение остаются открытыми.
 - Ветку `test/road-persistence-reload-2026-10-16` и PR №16 оставили draft. Не сливать до отдельного решения владельца.
+
+### SavedData: диск подтверждён, повторный вход ещё проверяется
+
+- [Run 38901080354](https://github.com/Anwite/four_old_legends/actions/runs/38901080354) завершился **failure из-за второго промаха GUI**, не из-за ошибки сериализации. [Артефакт 12047210062](https://github.com/Anwite/four_old_legends/actions/runs/38901080354/artifacts/12047210062) содержит `BEFORE_SAVE`, меню паузы и файл `world-savedata-files.txt`.
+- Найден **реальный SavedData-файл** Minecraft 26.3: `run/saves/FOL_CI_RoadProbe/dimensions/minecraft/overworld/data/oldlegends/arg_state.dat` (204 байта). Прежний тест неверно искал `<world>/data/oldlegends_arg_state.dat`. Внутреннюю корректность данных и возможность повторного входа ещё предстоит проверить.
+- Снимок паузы имеет разрешение **1280×1024**, тогда как auxiliary дисплей Xvfb был 1280×800. Предыдущая координата `(640,485)` попала **выше** `Save and Quit to Title`: игра оставалась на паузе, и `SERVER_STOPPING` в логах не подтверждён. По оригинальному снимку фактический центр кнопки `(640,620)`.
+- [Коммиты `5a25c80`](https://github.com/Anwite/four_old_legends/commit/5a25c802b973f63d74f65fb11b4168ad4e683e1f) и [`825d719`](https://github.com/Anwite/four_old_legends/commit/825d719f744e62b7aacfd3890ec45fe53798cbfe) в draft PR #17 исправили путь файла и root-координату клика. Новый [run 38902349699](https://github.com/Anwite/four_old_legends/actions/runs/38902349699) зарегистрирован; успешный Save/Quit/reopen пока не подтверждён. Не заявлять о тестировании холодного перезапуска или миграции до фактических доказательств.
