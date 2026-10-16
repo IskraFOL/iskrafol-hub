@@ -51,3 +51,16 @@
 **Кандидат [PR #47](https://github.com/Anwite/four_old_legends/pull/47)** переходит от исчезновения к незаметной перестановке слотов 9..35 *внутри PlayerData*, без отдельной записи SavedData. Стоимость решения: предмет можно найти в другой ячейке сразу, нет старой задержки 1–3 мин. [Java25 build #38956113405](https://github.com/Anwite/four_old_legends/actions/runs/38956113405) — PASS. [Диагностический PR #48](https://github.com/Anwite/four_old_legends/pull/48) проверяет сохранение 5 алмазов и 7 камней через повторное открытие одноразового мира, а также перестановку в полностью заполненном инвентаре; результат игрового CI на момент записи ещё не подтверждён. Не сливать до доказательств.
 
 **Cold JVM:** [run 38953424986](https://github.com/Anwite/four_old_legends/actions/runs/38953424986) и [повтор 38954821495](https://github.com/Anwite/four_old_legends/actions/runs/38954821495) не дошли до чтения очереди вторым JVM: автоматический поиск окна SDL3 завершался ошибкой, хотя в логах явно создан второй Java-процесс, Minecraft 26.3, OpenGL. Не принимать FAIL стенда за сбой логики игры и не принимать второй PID за доказательство сохранности.
+
+
+## Решение КТ-2026-10-16 / ITEMHAUNT-SAFE-01 — исправление слито
+
+**Основная ветка Minecraft-мода:** `main=8594d4c16c1b37c7e35bd51088c5af9ce0fa9643`, [PR #47](https://github.com/Anwite/four_old_legends/pull/47) **merged**. Исправление делает механику «пропажи» **перестановкой предметов между сохранёнными слотами 9–35 одного PlayerData**. Никакого настоящего временного изъятия `ItemStack` из инвентаря, внешних сундуков/предметных сущностей или SavedData-escrow. Поэтому ошибка атомарности двух файлов, продемонстрированная в старой модели, к новому алгоритму **не относится**.
+
+**Java25 проверки:** [38956113405](https://github.com/Anwite/four_old_legends/actions/runs/38956113405), [38957427387](https://github.com/Anwite/four_old_legends/actions/runs/38957427387), [38957427230](https://github.com/Anwite/four_old_legends/actions/runs/38957427230) — PASS.
+
+**Игровое подтверждение:** [38956672268](https://github.com/Anwite/four_old_legends/actions/runs/38956672268) — **PASS**. `PREPARED ok=true diamonds=5 stones=7 diamondSlot=17 moved=true`; после Save and Quit/повторного входа `REOPENED ok=true diamonds=5 stones=7 diamondSlot=17`; при полностью заполненном инвентаре `FULL ok=true changed=2 allMatched=true hotbarUntouched=true`. Отчёт: `pending_escrow_files=[]`, `failures=[]`.
+
+**Не переоценивать проверку:** это один мир и повторное открытие в той же JVM, не холодный краш во время записи PlayerData; не исчерпывает предметы с кастомными NBT/компонентами. Но прежний существенный риск потери ItemStack между инвентарём и несохранённой/независимой очередью структурно устранён. Вместо исчезновения на 1–3 минуты вещь переставляется по рюкзаку и может быть сразу найдена. **Диагностический PR #48 не слит; в production не включать CI-команды.**
+
+Ранние предупреждения «`main` небезопасен, отключить `itemHauntEnabled`» относятся к **историческому `main` до коммита `8594d4c`** или к пользователям со старыми собранными версиями, **не к новому GitHub `main`**. На Modrinth/CurseForge новый .jar ещё не публиковался.
