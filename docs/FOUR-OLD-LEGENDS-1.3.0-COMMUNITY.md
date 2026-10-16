@@ -115,3 +115,12 @@ Support the independent development of Four Old Legends. Donations are entirely 
 - Ошибка прежнего «ложно-зелёного» теста устранена: теперь несоответствие вызывает ненулевой exit code.
 - Java 25 / Minecraft 26.3 сборка коммита [38923259526](https://github.com/Anwite/four_old_legends/actions/runs/38923259526) — success.
 - Код в [draft PR #22](https://github.com/Anwite/four_old_legends/pull/22), **не слит**. Открытые пункты перед решением о слиянии: локальная проверка игроком, холодный перезапуск клиента с сохранённым `false`, подводный/лавовый рендер и другие видеомоды.
+
+## Контрольная точка — туман N и K проверен игровым CI (16 октября 2026)
+
+- **Ветка:** `feature/client-fog-toggle-1.3.0`, [draft PR #22](https://github.com/Anwite/four_old_legends/pull/22); PR **не слит**, main не затронут.
+- **Java 25 build:** [38923259526](https://github.com/Anwite/four_old_legends/actions/runs/38923259526) — success.
+- **Графический запуск Minecraft 26.3:** [38923252931](https://github.com/Anwite/four_old_legends/actions/runs/38923252931) — success.
+- **Игровой тест N и K:** [38923253050](https://github.com/Anwite/four_old_legends/actions/runs/38923253050) — success; артефакт [12054669374](https://github.com/Anwite/four_old_legends/actions/runs/38923253050/artifacts/12054669374). `fog-after-first-N.json=false`, `fog-after-second-N.json=true`, `fog-after-K-click.json=false`. Скриншот `12-K-fog-attempt-1.png` показывает Sanity → Atmospheric fog → OFF; кадры мира подтверждают визуальную разницу дымки.
+- **Важно о достоверности:** предыдущий тест [38922358646](https://github.com/Anwite/four_old_legends/actions/runs/38922358646) был ошибочно зелёным при `FAILED_K_MENU_TOGGLE` из-за `set +e` в тестовом shell. Сценарий исправлен, теперь Python assertion строго влияет на итог CI. Только новый прогон подтверждает K.
+- **Остаётся:** локальная сборка и проверка владельцем, закрыть/open Minecraft (полный новый JVM) для подтверждения сохранения, проверить клавишу N при смене мира и конфликтующих клавишах, вода/лава/видеомоды. **Merge только по явному разрешению владельца**.
