@@ -107,3 +107,11 @@ Support the independent development of Four Old Legends. Donations are entirely 
 ### Дополнительная проверка меню K
 
 Повторный тест [38922358646](https://github.com/Anwite/four_old_legends/actions/runs/38922358646) имел зелёный статус, **но внутри его журнала было `FOG_RUNTIME_VERDICT=FAILED_K_MENU_TOGGLE`**: скриншот подтвердил наличие переключателя Atmospheric fog в разделе Sanity, однако значение локальной настройки осталось `true` после клика. Это не считается пройденным K-тестом. В тестовом workflow устранена маскировка ошибки из-за `set +e`, добавлены явное нажатие/отпускание мыши и повторная проверка. Новая попытка: [38923253050](https://github.com/Anwite/four_old_legends/actions/runs/38923253050) (на момент записи выполняется). **N подтверждена предыдущей игровой проверкой; K ожидает успешного теста.**
+
+### Подтверждены N и K в Minecraft — контрольная точка 16.10.2026
+
+- [Minecraft fog in-world — run 38923253050](https://github.com/Anwite/four_old_legends/actions/runs/38923253050) **success**, артефакт [12054669374](https://github.com/Anwite/four_old_legends/actions/runs/38923253050/artifacts/12054669374).
+- Сценарий проверки в одноразовом тестовом мире: N → `false`, повторная N → `true`, открытие K → Sanity → нажатие Atmospheric fog → `false`; `K_MENU_TOGGLE_CONFIRMED_ATTEMPT=1`. Проверено по трём файлам JSON и настоящему снимку кнопки **OFF**.
+- Ошибка прежнего «ложно-зелёного» теста устранена: теперь несоответствие вызывает ненулевой exit code.
+- Java 25 / Minecraft 26.3 сборка коммита [38923259526](https://github.com/Anwite/four_old_legends/actions/runs/38923259526) — success.
+- Код в [draft PR #22](https://github.com/Anwite/four_old_legends/pull/22), **не слит**. Открытые пункты перед решением о слиянии: локальная проверка игроком, холодный перезапуск клиента с сохранённым `false`, подводный/лавовый рендер и другие видеомоды.
