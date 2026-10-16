@@ -87,3 +87,11 @@ Support the independent development of Four Old Legends. Donations are entirely 
 - Следующий шаг: подключить совместимый CI из ранее разработанной тестовой ветки/настроить безопасный запуск, затем провести визуальный тест и дождаться проверки владельца. Никакого слияния без отдельного разрешения.
 
 - Для fog PR #22 добавлен отдельный workflow `.github/workflows/fog-toggle-build.yml` в ветке PR. Первые запуски [38917943703](https://github.com/Anwite/four_old_legends/actions/runs/38917943703) и [38917951375](https://github.com/Anwite/four_old_legends/actions/runs/38917951375) созданы; на момент записи ещё выполняются. Не считать это подтверждением успешной сборки до результата.
+
+## Контрольная точка реализации тумана — 16 октября 2026
+
+- Отдельная ветка [`feature/client-fog-toggle-1.3.0`](https://github.com/Anwite/four_old_legends/tree/feature/client-fog-toggle-1.3.0) и [draft PR #22](https://github.com/Anwite/four_old_legends/pull/22), без слияния в main.
+- Реализованы N, настройка в K, локальный файл `config/oldlegends-client.json`, поведение «выключено → исходный туман Minecraft», локализация RU/EN.
+- [GitHub Actions build #4](https://github.com/Anwite/four_old_legends/actions/runs/38920992920) — **success**, Java 25 / Minecraft 26.3.
+- [Графический клиентский smoke test](https://github.com/Anwite/four_old_legends/actions/runs/38920985628) запущен, **результат на момент записи не подтверждён**. Этот тест только запуск/кадр, а не доказательство переключения N и K непосредственно в загруженном мире.
+- **Открытые проверки:** N и K в игре, настройка после перезапуска, подводный/лавовый туман, совместимость с чужими визуальными модами. После результатов и локальной проверки получить разрешение владельца до merge.
