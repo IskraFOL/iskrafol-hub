@@ -79,3 +79,22 @@
 - Следующая задача аудита дорог: изолированные runtime-сценарии смены миров и сохранений, затем исправление потери `RoadEnd` при временной недоступности чанка; отдельный ассет правого поворота остаётся требованием контента.
 
 Подробности, пределы проверки и источники: [контрольная точка ROAD-SAVEDATA-CHECKPOINT-2026-10-16](ROAD-SAVEDATA-CHECKPOINT-2026-10-16.md).
+
+## КТ — фактическая интеграция веток аудита в `main` (16.10.2026)
+
+После выборочной проверки не следует считать все PR с именем `audit` неслитыми или, наоборот, считать закрытый PR доказательством интеграции кода.
+
+| Источник | Статус относительно `main` |
+|---|---|
+| [PR #1](https://github.com/Anwite/four_old_legends/pull/1), `audit/fixes-2026-10-11` | **MERGED**, исходная ветка является предком `main` |
+| [PR #5](https://github.com/Anwite/four_old_legends/pull/5), `audit/fixes-2026-10-14` | **MERGED**, исходная ветка является предком `main` |
+| Старый [PR #3](https://github.com/Anwite/four_old_legends/pull/3) | Закрыт как заменённый PR #5: по отдельности не вливался, но код исходной ветки уже интегрирован |
+| [PR #6](https://github.com/Anwite/four_old_legends/pull/6), статический отчёт | Перенесён отдельным [PR #30](https://github.com/Anwite/four_old_legends/pull/30) (merge `2f899b6`), с пояснением об устаревших статусах; исходный draft закрыт |
+| [PR #7](https://github.com/Anwite/four_old_legends/pull/7), имя сборки и комментарий `ArgState` | Перенесён отдельным [PR #28](https://github.com/Anwite/four_old_legends/pull/28) (merge `5046878`), обе Java 25 проверки зелёные; исходный draft закрыт |
+| [PR #4](https://github.com/Anwite/four_old_legends/pull/4), большой audit follow-up | **НЕ СЛИТ**; затрагивает дороги, сцены, NPC, Item Haunt и SavedData, нужен выборочный аудит с независимыми тестами |
+| [PR #20](https://github.com/Anwite/four_old_legends/pull/20), защита построек от Забвения | Исходный стек **НЕ СЛИТ**; только четыре production-файла перенесены в новый [draft PR #29](https://github.com/Anwite/four_old_legends/pull/29), Java 25 build прошёл. Предыдущий игровой тест [38907992462](https://github.com/Anwite/four_old_legends/actions/runs/38907992462) — **FAIL**, не выдавать как доказательство полной безопасности |
+| [PR #27](https://github.com/Anwite/four_old_legends/pull/27), выгруженные дорожные концы | **Draft, не слит**; [natural growth 38934306952](https://github.com/Anwite/four_old_legends/actions/runs/38934306952) PASS, но специализированная фаза отхода/возвращения была добавлена позже и ещё не подтверждена |
+
+Слитые дорожные стыки: [PR #23](https://github.com/Anwite/four_old_legends/pull/23), изоляция сохранений: [PR #26](https://github.com/Anwite/four_old_legends/pull/26). Основное имя будущего JAR на текущем `version=1.2.0`: `four-old-legends-1.2.0.jar`; настройки Minecraft 26.3 / Java 25 не менялись.
+
+**Ограничения:** закрытие старого draft PR не удаляет ветку и не означает, что все перечисленные в нём игровые риски проверены. Автоматическая миграция координат старого `RoadEnd.pos` и перенос полного PR #4 не проводились. Пользовательские миры не изменялись удалёнными CI-сценариями.
