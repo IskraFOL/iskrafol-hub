@@ -47,3 +47,10 @@
 - Коммит [`eb89c22`](https://github.com/Anwite/four_old_legends/commit/eb89c22ca356aa214ed0abdc97e26490b38a9efc) в тестовой ветке PR #10 дополняет CI-сценарий: перед созданием мира открывает вкладку **World**, снимает `04-world-tab-terrain-options.png`, возвращается к вкладке **Game** и затем продолжает дорожный пробник.
 - Цель — подтвердить расположение настройки типа мира и в следующем проходе выбрать Superflat. Это диагностика UI, а не заявление об уже включённом Superflat.
 - GitHub зарегистрировал [run #37 / 38879325477](https://github.com/Anwite/four_old_legends/actions/runs/38879325477) со статусом `queued` на момент записи. Проверка дорожных зазоров всё ещё открыта.
+
+## Результат #37 и новая попытка выбора Superflat — 16.10.2026
+
+- [Run #37 / 38879325477](https://github.com/Anwite/four_old_legends/actions/runs/38879325477) завершился успешно: `BENCH_POINTS_FROM_LOG=7`, получены 7 снимков и подтверждение дорожного стенда в логе. Артефакт [12036354614](https://github.com/Anwite/four_old_legends/actions/runs/38879325477/artifacts/12036354614).
+- Изображение `04-world-tab-terrain-options.png` подтверждает экран настройки World в Minecraft 26.3, переключатель `World Type: Default` с центром около root (480,362), окно клиента начинается root (212,252).
+- Коммит [`41934b5`](https://github.com/Anwite/four_old_legends/commit/41934b51990365f200c9acbc394a0a4b79e89bd9) обновил тестовую ветку PR #10: выполняется один клик по World Type и сохраняются новый скриншот и OCR-отчёт о типе мира. Пока Superflat не подтверждён.
+- [Run #39 / 38880177174](https://github.com/Anwite/four_old_legends/actions/runs/38880177174) зарегистрирован, при проверке выполнялся. Следующий шаг — прочесть артефакт, подтвердить Superflat, затем оценивать стыки дороги. NBT и Java не менялись; PR не слиты.
