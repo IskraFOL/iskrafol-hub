@@ -110,3 +110,13 @@
 - В журнале **две** загрузки `[Old Legends ARG] состояние ARG загружено из мира.` и **одно** штатное сохранение `[Old Legends ARG] состояние ARG сохранено в мир.`. На диске файл `run/saves/FOL_CI_RoadProbe/dimensions/minecraft/overworld/data/oldlegends/arg_state.dat` размером **208 байт**. На снимке `26-after-reopen.png` повторно открыт тот же мир с уже построенной дорогой.
 - Принципиальное ограничение: это **Save/Quit/reopen в одном JVM-процессе Minecraft**, а не cold restart, crash recovery или миграция исторического `RoadEnd.pos`. Ничего не доказывает о совместимости старой версии геометрии. Никакие пользовательские сохранения и Java/NBT не менялись.
 - [Draft PR №17](https://github.com/Anwite/four_old_legends/pull/17) содержит только скрипт и GitHub Actions тест. Следующий тест — cold restart с теми же файлами в одноразовом CI-мире; миграция старых данных по [защитному плану](ROAD-SAVEDATA-MIGRATION-SAFETY-2.0.0.md). Слияния нет.
+
+## ✅ Контрольная точка: один и тот же мир пережил Save & Quit / Reload (16.10.2026)
+
+- После исправления диагностического ограничения `find -maxdepth 5`, которое ложно скрывало файл, проверка [GitHub Actions run 38901063381](https://github.com/Anwite/four_old_legends/actions/runs/38901063381) успешно завершилась. [Артефакт 12046177283](https://github.com/Anwite/four_old_legends/actions/runs/38901063381/artifacts/12046177283), `road-reload-report.json` — `verdict=PASS`, `failures=[]`.
+- Реальный путь SavedData в Minecraft 26.3: `run/saves/FOL_CI_RoadProbe/dimensions/minecraft/overworld/data/oldlegends/arg_state.dat` (новый, отдельно созданный в GitHub Runner мир).
+- **До штатного выхода:** `BEFORE_SAVE tension=14 occupied=33 ends=1 endKeys=-5,-60,-8,west,2,0`, серверная стадия ~2978 тиков.
+- Клиент выполнил **Save and Quit to Title**; лог подтверждает `состояние ARG сохранено в мир`, `Stopping server`, `Stopping singleplayer server as player logged out`, запись чанков.
+- **После открытия того же мира**: `AFTER_RELOAD tension=14 occupied=33 ends=1 endKeys=-5,-60,-8,west,2,0`; новый серверный счётчик ~700 тиков. Журнал содержит **два** `состояние ARG загружено из мира` до/после перезапуска.
+- **Вывод:** новая дорожная сеть, напряжение и координаты активного конца переживают холодную перезагрузку встроенного сервера. Это **не** доказывает совместимость старых координат до рефакторинга `RoadEnd.pos`; отдельный риск остаётся.
+- При первичной неудачной диагностике [run 38899953547](https://github.com/Anwite/four_old_legends/actions/runs/38899953547) ошибка `FAIL_NO_SAVED_DATA` была вызвана недостаточной глубиной поиска, а не доказанной потерей данных.
