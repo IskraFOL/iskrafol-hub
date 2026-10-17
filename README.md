@@ -78,3 +78,5 @@ IskraFOL
 - **Результат:** этот раздел добавлен для проверки, что интеграция может обновлять файл в репозитории организации.
 
 **Сообщество Four Old Legends:** [Telegram](https://t.me/four_old_legends) · [Boosty BrainMystycal](https://boosty.to/brainmystycal). [План релиза 1.3.0 и тексты для Modrinth/CurseForge](docs/FOUR-OLD-LEGENDS-1.3.0-COMMUNITY.md).
+
+**Завершение инвентаризации аудита 17.10.2026:** [фиксированная граница проверки и четыре конечных пакета приёмки перед Four Old Legends 1.3.0](docs/FOUR-OLD-LEGENDS-AUDIT-EXIT-2026-10-17.md). Важные незакрытые риски не объявляются исправленными до игрового теста.
