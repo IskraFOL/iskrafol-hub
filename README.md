@@ -80,3 +80,5 @@ IskraFOL
 **Сообщество Four Old Legends:** [Telegram](https://t.me/four_old_legends) · [Boosty BrainMystycal](https://boosty.to/brain_mystycal). [План релиза 1.3.0 и тексты для Modrinth/CurseForge](docs/FOUR-OLD-LEGENDS-1.3.0-COMMUNITY.md).
 
 **Стиль Telegram и Boosty (КТ 17.10.2026):** [двуязычная редакционная политика и тексты описаний](docs/COMMUNITY-BILINGUAL-STYLE-2026-10-17.md).
+
+**Бренд и Boosty (КТ 17.10.2026):** [первый пост, уровень «Искра | Spark» (99 ₽) и утверждённый творческий символ с манифестом](docs/BRAND-SPARK-BOOSTY-LAUNCH-2026-10-17.md).
