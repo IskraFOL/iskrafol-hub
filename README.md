@@ -77,4 +77,14 @@ IskraFOL
 - **Назначение:** тестовая запись через подключение GitHub.
 - **Результат:** этот раздел добавлен для проверки, что интеграция может обновлять файл в репозитории организации.
 
-**Сообщество Four Old Legends:** [Telegram](https://t.me/four_old_legends) · [Boosty BrainMystycal](https://boosty.to/brainmystycal). [План релиза 1.3.0 и тексты для Modrinth/CurseForge](docs/FOUR-OLD-LEGENDS-1.3.0-COMMUNITY.md).
+**Сообщество Four Old Legends:** [Telegram](https://t.me/four_old_legends) · [Boosty BrainMystycal](https://boosty.to/brain_mystycal). [План релиза 1.3.0 и тексты для Modrinth/CurseForge](docs/FOUR-OLD-LEGENDS-1.3.0-COMMUNITY.md).
+
+**Стиль Telegram и Boosty (КТ 17.10.2026):** [двуязычная редакционная политика и тексты описаний](docs/COMMUNITY-BILINGUAL-STYLE-2026-10-17.md).
+
+**Бренд и Boosty (КТ 17.10.2026):** [первый пост, уровень «Искра | Spark» (99 ₽) и утверждённый творческий символ с манифестом](docs/BRAND-SPARK-BOOSTY-LAUNCH-2026-10-17.md).
+
+## Ценности Искры — созидание и сохранение
+
+**Мы создаём новое и бережём уже созданное.** Созидание — главный смысл Искры; сохранение существующих миров, результатов труда, истории проектов и доверия пользователей — одна из важнейших ценностей IskraFOL. Развитие не должно бездумно уничтожать сделанное ранее. [Утверждённая ценность и предлагаемая глава большого манифеста](docs/ISKRAFOL-CREATION-AND-PRESERVATION-VALUES-2026-10-17.md).
+
+**Boosty, три ступени созидания (КТ 17.10.2026):** [утверждённые цены 99 / 299 / 599 ₽, описания уровней «Искра → Пламя → Мир» и девиз «Созидай. Сохраняй. Делись.»](docs/BOOSTY-SPARK-FLAME-WORLD-TIERS-2026-10-17.md).

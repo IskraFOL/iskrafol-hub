@@ -13,7 +13,7 @@
 ## Сообщество и поддержка
 
 - **Telegram Four Old Legends:** https://t.me/four_old_legends — точную ссылку подтвердил владелец.
-- **Boosty BrainMystycal:** https://boosty.to/brainmystycal — использовавшийся ранее адрес поддержки автора; перед публикацией проверить, что страница доступна и принадлежит автору.
+- **Boosty BrainMystycal:** https://boosty.to/brain_mystycal — использовавшийся ранее адрес поддержки автора; перед публикацией проверить, что страница доступна и принадлежит автору.
 - **GitHub проекта:** https://github.com/Anwite/four_old_legends — технические материалы и обращения, когда соответствующий репозиторий/раздел публичен. Не обещать публичные GitHub Issues без проверки прав доступа.
 
 ### Площадки публикации
@@ -30,7 +30,7 @@
 
 Follow Four Old Legends development news, upcoming updates, screenshots, announcements, and share your feedback.
 
-❤️ **[Support the developer on Boosty](https://boosty.to/brainmystycal)**
+❤️ **[Support the developer on Boosty](https://boosty.to/brain_mystycal)**
 
 Support the independent development of Four Old Legends. Donations are entirely optional — all gameplay content remains available to everyone.
 
@@ -42,7 +42,7 @@ Support the independent development of Four Old Legends. Donations are entirely 
 
 Новости разработки, будущие обновления, скриншоты, анонсы и общение с игроками.
 
-❤️ **[Поддержать разработчика на Boosty](https://boosty.to/brainmystycal)**
+❤️ **[Поддержать разработчика на Boosty](https://boosty.to/brain_mystycal)**
 
 Добровольная поддержка разработки Four Old Legends. Донаты необязательны — весь игровой контент доступен каждому игроку.
 
@@ -235,3 +235,7 @@ Support the independent development of Four Old Legends. Donations are entirely 
 **Диктофон:** отдельная ветка `fix/recorder-playback-lifecycle-1.3.0`, [draft PR #24](https://github.com/Anwite/four_old_legends/pull/24) от `main` после дорожного слияния. В `VoiceRecorderScreen.java` добавлен контроль `SoundManager.isActive` в экранном тике и запас до 100 тиков на начало потокового OGG. После естественного завершения проигрывания или невозможности старта экран перестаёт показывать `playing_state`, выключает Stop, возвращается в `ready_state`; ручная остановка очищает и счётчики. Старые аудиофайлы, сюжет, `RecordingTapeItem` и `VoiceRecorderItem` не изменялись.
 
 **CI:** [Java 25 build #38930986596](https://github.com/Anwite/four_old_legends/actions/runs/38930986596) — **success**. **Остаётся:** подтвердить в игровом клиенте достижение конца аудиозаписи и корректное повторное воспроизведение; до этого PR #24 держать **draft, не сливать только по результату компиляции**. Версия 1.3.0, озвучка исследователя и тексты REC_0001–REC_0005 остаются отдельной задачей; не объявлять голосовые OGG финальными.
+
+## КТ 17 октября 2026: двуязычный стиль Telegram / Boosty
+
+Владелец утвердил чередование EN → RU после каждой фразы, Telegram оставлен посвящённым Four Old Legends, Boosty BrainMystycal — общей авторской площадкой. Актуальные ссылки, тексты описаний и принципы коротких ARG-тизеров: [отдельная контрольная точка](COMMUNITY-BILINGUAL-STYLE-2026-10-17.md). Исторические блоки EN/RU выше оставлены для контекста; при новых публикациях пользоваться новым парным форматом.
