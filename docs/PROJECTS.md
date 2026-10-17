@@ -154,3 +154,8 @@
 ### Сайт — подготовка GitHub Pages IskraFOL
 
 Выбран https://iskrafol.github.io/fouroldlegends/; сборка, пути и возврат формы подготовлены и проверены для этого адреса. [PR #6](https://github.com/Anwite/four-old-legends-website/pull/6) без слияния; исходники/Hub остаются приватными. Открытый сайт ещё не опубликован: требуются создание отдельного репозитория с готовыми файлами и настройка Pages через владельца или разрешённый браузер. Приватный Sites обновлён успешно. [Полная запись](FOUR-OLD-LEGENDS-WEBSITE.md).
+
+
+### Сайт — опубликован в открытый доступ, 17 октября 2026
+
+**https://iskrafol.github.io/fouroldlegends/** — действующий публичный сайт. Создан отдельный IskraFOL/fouroldlegends с готовой сборкой; Pages main/(root), HTTPS, [deployment completed/success](https://github.com/IskraFOL/fouroldlegends/actions/runs/39065047001). Главная, видимые иконки, RU/EN, темы и навигация пресс-кита проверены в настольном браузере. Исходники и Hub остаются приватными, [PR #6](https://github.com/Anwite/four-old-legends-website/pull/6) без слияния. Реальные кадры — после фотосессии; доставка почты и Android отдельно не подтверждены. [Полная запись](FOUR-OLD-LEGENDS-WEBSITE.md).
