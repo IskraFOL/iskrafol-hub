@@ -191,3 +191,10 @@
 - Ранние красные Gradle jobs объяснены: обычный CLI harness ошибочно находился в `src/test/java`, где `:test` требовал JUnit. Перемещение в `ci-tests/` устранило проблему; без изменения исходной логики WAL.
 - **Не тестировалось/не реализовано:** сериализация полного снимка в игровом Minecraft, блокировка изменения мира до реального fsync, NBT block entities, Windows-семантика fsync каталога, настоящая авария клиента после постройки и физическое восстановление мира.
 - PR #52 остаётся DRAFT, `main` и версия `gradle.properties=1.2.0` неизменны; релиз 2.0.0 не проводился. Следующий шаг — подготовка полного snapshot/expected blueprint **до первого setBlock**, реальный Xvfb kill/restart в одноразовом мире.
+
+## КТ 17.10.2026 — NBT снимков настоящих Minecraft BlockState проверен
+
+- ✅ [Minecraft GUI CI 39010924173](https://github.com/Anwite/four_old_legends/actions/runs/39010924173) — **PASS**, `SCENE_SNAPSHOT_REAL_NBT_CI`, `failures=[]`. В реальном Minecraft 26.3 запись/чтение/сравнение WAL проверены для заранее сформированных 4291 пар BlockState встречи (679439 байт) и 1380 пар летописца (218585 байт). Сложные свойства блоков сохранены точно.
+- ✅ [PR #53](https://github.com/Anwite/four_old_legends/pull/53) — только тестовая ветка, не в main. [PR #52](https://github.com/Anwite/four_old_legends/pull/52) — WIP-дисковый журнал с NBT кодеком, тоже **draft**. Сборки и cold-JVM тесты WAL ранее пройдены: [39009114788](https://github.com/Anwite/four_old_legends/actions/runs/39009114788) и [39009118180](https://github.com/Anwite/four_old_legends/actions/runs/39009118180).
+- ⚠️ `physical_world_was_modified=false`, `crash_recovery_tested=false`: ни один из этих PASS не показывает восстановление физической сцены после аварии. В `main=a601b2d8` только прежний защищённый *обычный* откат из PR #50.
+- Открытый следующий шаг: детерминированный blueprint всех замен до первого `setBlock`, durable WAL и fail-closed старт сцен, затем kill/restart в одноразовом реальном мире. Отдельно NBT block entities, конфликты между сценами, Windows fsync.
