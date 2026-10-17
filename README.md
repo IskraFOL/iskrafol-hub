@@ -77,4 +77,6 @@ IskraFOL
 - **Назначение:** тестовая запись через подключение GitHub.
 - **Результат:** этот раздел добавлен для проверки, что интеграция может обновлять файл в репозитории организации.
 
-**Сообщество Four Old Legends:** [Telegram](https://t.me/four_old_legends) · [Boosty BrainMystycal](https://boosty.to/brainmystycal). [План релиза 1.3.0 и тексты для Modrinth/CurseForge](docs/FOUR-OLD-LEGENDS-1.3.0-COMMUNITY.md).
+**Сообщество Four Old Legends:** [Telegram](https://t.me/four_old_legends) · [Boosty BrainMystycal](https://boosty.to/brain_mystycal). [План релиза 1.3.0 и тексты для Modrinth/CurseForge](docs/FOUR-OLD-LEGENDS-1.3.0-COMMUNITY.md).
+
+**Стиль Telegram и Boosty (КТ 17.10.2026):** [двуязычная редакционная политика и тексты описаний](docs/COMMUNITY-BILINGUAL-STYLE-2026-10-17.md).
