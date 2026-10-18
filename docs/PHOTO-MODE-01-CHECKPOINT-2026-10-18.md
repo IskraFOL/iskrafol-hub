@@ -38,3 +38,12 @@
 ## Фото / другие КТ
 
 Остановка BUS-STOP-05 с №124, последним рейсом 23:44 и граффити «Знакомое место» визуально утверждена владельцем. Нативный JVM-код `0xC0000005` не воспроизводится в последних ручных перезапусках, но первопричина не доказана. Густой туман Four Old Legends диагностирован в `AlphaFogMixin` (fogStart=6.4, fogEnd=32 блока); отключается клавишей N и пока не изменяется, отдельная дальнейшая работа над интенсивностью тумана.
+
+
+## КТ — первая реальная компиляция PHOTO MODE и устранение API ошибок
+
+Владелец сделал локальный запуск `FOL_JVMTEST` через IntelliJ IDEA на ветке `feature/photo-mode-staged-npcs-2026-10-18`. Gradle дошёл до `compileJava` и сообщил **3 ошибки** в `LegendNpcEntity.java`: отсутствует переопределяемый `Monster.shouldDespawnInPeaceful`, отсутствует его вызов `super.shouldDespawnInPeaceful()`, и нет `ValueInput.getBoolean(String)`.
+
+**Исправление:** [commit c73d241f](https://github.com/Anwite/four_old_legends/commit/c73d241f0743b937d48364c9d295a711b7c76fee) — удалён метод `shouldDespawnInPeaceful`, флаг `PhotoMode` загружается через доступный в MC 26.3 `getBooleanOr("PhotoMode", false)`. Регистрация `oldlegends:legend_npc` и естественное поведение настоящих NPC не изменены. В 26.3 Peaceful-политика относится к `EntityType`; специфическое поведение фотоперсонажей на Peaceful требует ручной проверки.
+
+**Повторная компиляция пока не подтверждена**: пользователь ещё не сделал Pull и перезапуск после этого коммита. `main` не затронут, PR #62 Draft, Actions/VirtualBox не запускались.
