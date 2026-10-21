@@ -235,3 +235,45 @@
 - Не внесено изменений в исходники игрового мода, сайт или чей-либо `main`.
 - Отдельно сохраняются приоритеты: сначала критический ROAD P0 #70 и выбор RoadEnd P1, затем игровые B1–B8, dictaphone и crash recovery; не расширять объём релиза автоматически и не начинать аудит по кругу.
 
+
+
+## 10. Продолжение СТАТИЧЕСКОГО аудита после PR #70 — 21.10.2026
+
+**Режим:** только чтение исходников, математическая проверка геометрии и фиксация результатов. **Игровой код НЕ менялся; GitHub Actions/Java 25/Minecraft не запускались.** Проверялась ветка [PR #70](https://github.com/Anwite/four_old_legends/pull/70), HEAD `05f62f1166f5d7cbaf1e9f4102ef7a3575b280f0`. Основание #69 осталось неизменным; #70 остаётся Draft/OPEN.
+
+### Блокеры, найденные ПОСЛЕ внедрения P0-защит
+
+**P0 / новый риск регрессии: служебный маркер road_corner перекрывает последний ряд предыдущей прямой дороги.**
+
+- `RoadGeom.exitOfSegment` определяет следующий вход через шаг после `SEG_D-1`, а `RoadGeom.atForCorner` привязывает `(x=0,z=1)` к `RoadEnd.pos`. Служебная клетка `road_corner(x=0,z=0)` оказывается **ровно на клетке предыдущей дороги**. Для SOUTH пример: road_segment `at=(0,0)` → последний настил `(3,10)` → `RoadEnd=(3,11)` → road_corner `at=(3,10)` → маркер `(3,10)`. Точно такое же совпадение **4/4 ориентаций** по формулам `RoadGeom.localToWorld/worldToAt`.
+- `RoadPlacementSafety.preflight` пропускает лишь воздух и для других NBT-клеток отказывает при `!RoadTerrain.canGrade(previous)`; существующее дорожное покрытие из deepslate bricks не природный грунт. Следовательно, **если маркер реально сохранён в NBT** (наличие предполагают `Structures.replaceRoadStructureBlocks` и `RoadTerrain.isCornerServiceMarker`), корректный стык может быть отклонён как `PROTECTED_NBT_BLOCK`.
+- При разрешении маркера необходимо проверить **дополнительную** вещь: `replaceRoadStructureBlocks` сейчас заменяет служебный маркер на AIR. Если маркер перезаписывает существующий настил, это способно создать щель. Нельзя просто исключить клетку из `preflight`, не проверив результат постобработки.
+- **Доказано статикой:** пересечение координат 4/4 + существование конфликтующих путей кода. **НЕ доказано:** точный содержательный состав NBT и итог в Minecraft на #70. До принятия проверить фактический NBT, пересечения всех поворотов и игровую геометрию.
+- Ссылки: [RoadGeom](https://github.com/Anwite/four_old_legends/blob/fix/road-p0-bridge-rollback-1-3-0-2026-10-21/src/main/java/com/oldlegends/road/RoadGeom.java#L95-L135), [RoadPlacementSafety](https://github.com/Anwite/four_old_legends/blob/fix/road-p0-bridge-rollback-1-3-0-2026-10-21/src/main/java/com/oldlegends/road/RoadPlacementSafety.java#L74-L106), [postprocess](https://github.com/Anwite/four_old_legends/blob/fix/road-p0-bridge-rollback-1-3-0-2026-10-21/src/main/java/com/oldlegends/util/Structures.java#L215-L255).
+
+**P0 / подтверждённая несовместимость preflight и postprocess: игрокский STRUCTURE_BLOCK в пустой клетке габарита.**
+
+- В `RoadPlacementSafety.preflight` каждая NBT-клетка `minecraft:air` пропускается, в ней не проверяются чужие BlockEntity.
+- `Structures.replaceRoadStructureBlocks` **сканирует ВСЮ ограничивающую прямоугольную область NBT**, не только записанные структурой маркеры; всякий существующий `Blocks.STRUCTURE_BLOCK` внутри неё заменяется на найденный соседний материал или AIR.
+- Следовательно, собственный структурный блок игрока в пустой кромке road_segment/road_corner может быть изменён после успешной установки **без прохода проверки занятых клеток** и без аварийного отката (откат действует только при false/exception). Особенно опасно из-за BlockEntity.
+- **Доказано чтением кода:** реальные области чтения/записи не совпадают; воспроизведение в игре остаётся открытым. Исправление — обрабатывать **только идентифицированные маркеры размещаемого NBT**, либо обеспечить полную защиту всех мест, которые может изменить постпроцессор.
+- Ссылки: [preflight](https://github.com/Anwite/four_old_legends/blob/fix/road-p0-bridge-rollback-1-3-0-2026-10-21/src/main/java/com/oldlegends/road/RoadPlacementSafety.java#L65-L108), [postprocessor](https://github.com/Anwite/four_old_legends/blob/fix/road-p0-bridge-rollback-1-3-0-2026-10-21/src/main/java/com/oldlegends/util/Structures.java#L215-L259).
+
+### Остальные P1 / ограниченные доказательствами замечания
+
+1. **Преждевременное закрытие RoadEnd — ПОДТВЕРЖДЁННЫЙ ПУТЬ.** `RoadBuilder.tryGrow` (в т. ч. выбор угла по двум коридорам + одной проверяемой точке) не всегда вызывает новый `RoadPlacementSafety.preflight`. `RoadDirector.growFromRandomEnd` удаляет конец и при `GrowthResult.fail()`, и при `Structures.place=false`; другой пригодный кандидат повторно не проверяется. Новый P0 guard способен увеличить частоту таких отказов. Проверять кандидатов до выбора и не терять жизнеспособный конец после одного отказа.
+2. **Защита «любых построек» по BlockState — НЕ доказана.** `RoadTerrain.canGrade` разрешает `BlockTags.BASE_STONE_OVERWORLD` и другие природные материалы. Игрок может построить что-то из `minecraft:stone`, неотличимого только по `BlockState` от природного камня. Материальный список обеспечивает консервативную защиту от большинства искусственных блоков, но **не доказательство сохранности любой постройки**. Требуются стратегия/ограничение либо тесты с обычным камнем и альтернативные признаки застройки.
+3. **NBT block-entity payload — НЕ ПРОВЕРЕН.** `RoadPlacementSafety` отвергает уже стоящую в мире BlockEntity и корневой список NBT-entities, но не проверяет поле `blocks[].nbt`/наличие BlockEntity **в самом шаблоне**. Снимок rollback сохраняет только `BlockState`. В существующих дорожных NBT наличие таких данных не установлено. Проверить/запретить их явно, либо сохранять содержимое, прежде чем заявлять полноценный атомарный откат.
+4. **B6 старые миры — синтаксис есть, миграции координат нет.** `RoadEnd.fromKey` принимает как старый `x,y,z,DIR`, так и новый `x,y,z,DIR,runLength,lastTurn`, `ArgSavedData` сохраняет эти строковые ключи; при этом `RoadDirector` прямо признаёт, что исторический смысл `RoadEnd.pos()` менялся. Прочитать строку ≠ сохранить геометрию дороги без сдвига. Нужен тест **копии старого мира**, не ручное исправление единственного сохранения.
+5. **Дополнительная граничная ситуация P1:** `RoadTerrain.pavement` может вернуть null, `RoadTerrain.finish` тогда ничего не строит, а `Structures.place` записывает предупреждение и возвращает true. Полное NBT-полотно в этом случае не гарантируется, `RoadNetwork` тем не менее продвигается. Нужен тест реальной палитры/маркеров.
+
+### Что действительно PASS только статически
+
+- **4/4 математических направления**: перекрытие corner marker и прошлой дороги подтверждено расчётом.
+- **12 916/12 916 расчётных 3D-клеток**: для трёх размеров NBT (straight 9×7×11, corner 13×8×17, bridge 8×8×12) и 4 направлений формула `RoadPlacementSafety.snapshot` согласована с нормализацией/поворотом `Structures.place`; **0 несовпадений**. Это не проверка содержимого NBT/физики Minecraft.
+- По публичным javadoc **Minecraft 26.3** сверены существующие методы `StructureTemplate.save(CompoundTag)`, `CompoundTag.getListOrEmpty`, `ListTag.getCompoundOrEmpty/getListOrEmpty/getIntOr`; однако сборка JDK25 не выполнялась. Ссылки: https://aldak.netlify.app/javadoc/26.3.x/net/minecraft/world/level/levelgen/structure/templatesystem/structuretemplate , https://aldak.netlify.app/javadoc/26.3.x/net/minecraft/nbt/listtag .
+- **Сохранения/авторазвитие в реальном мире, B1–B8, crash-recovery и диктофон — пока НЕ ПРОВЕРЕНЫ на текущей цепочке.**
+
+### Конечный следующий шаг, без раздувания аудита
+
+**НЕ СЛИВАТЬ #70** и не рекомендовать игровое тестирование именно как релизное, пока не устранены оба новых P0. После них — ограниченная статическая проверка реального footprint NBT и инъекция failure, далее одна игровая приёмка на отдельном мире через IDE Play и чек-лист B1–B8. Дальше PR #24 и crash-recovery по существующему плану. На этой итерации **исходники мода, сайт и main не изменялись**.
