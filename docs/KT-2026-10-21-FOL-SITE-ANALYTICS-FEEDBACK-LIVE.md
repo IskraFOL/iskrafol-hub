@@ -37,7 +37,7 @@
 **ЗАВИСИМОСТЬ:** до момента выдачи владельцем публичного Cloudflare Web Analytics Site Token загрузчик выключен и данные о посещениях НЕ собираются. Никаких ложных счётчиков не выводим. Прошлые посещения задним числом не восстановить.
 
 Для активации владелец должен открыть https://dash.cloudflare.com/ →
-Analytics & Logs → Web Analytics → Add site → hostname искраfol github адрес (точное значение: iskrafol.github.io) → получить Site Token 32 hex → внести его в публичный assets/fol-site-analytics.js. Важно: нужен Site Token, а НЕ API Token или пароль.
+Analytics & Logs → Web Analytics → Add site → hostname: iskrafol.github.io → получить Site Token 32 hex → внести его в публичный assets/fol-site-analytics.js. Важно: нужен Site Token, а НЕ API Token или пароль.
 После активации проверить загрузку beacon и данные в панели Cloudflare.
 
 ## Следующие шаги
