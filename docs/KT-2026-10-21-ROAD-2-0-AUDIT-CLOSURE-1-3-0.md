@@ -495,3 +495,46 @@ Minecraft 26.3 gameplay, B1–B8 и Save/Quit/Load **не подтвержден
 инструкция описывает 26.2, поэтому не заявляем GameTest для 26.3 как
 уже работающий. Оригинальные миры, код мода, Draft PR #70/#72 и
 GitHub Actions этой записью не изменены.
+
+
+## 20. КТ — 22.10.2026: первый реальный серверный Fabric GameTest без виртуалки
+
+По прямому разрешению владельца реализована отдельная **тестовая** ветка
+`test/road-server-gametest-26-3-2026-10-22`, созданная от
+[Draft FOL #72](https://github.com/Anwite/four_old_legends/pull/72),
+HEAD базы `0548f0e03a5293d95d58e481d8fb5a8aedc3c990`.
+Создан [Draft FOL #73](https://github.com/Anwite/four_old_legends/pull/73),
+HEAD `3ad625362c2c77cb88ebb3f7e62f510b4c20fb96`.
+
+**В #73 подготовлено:**
+- `build.gradle`: Fabric `configureTests`, отдельный GameTest source set,
+  modId `oldlegends_gametest`, серверные тесты без клиента;
+- отдельные `src/gametest/resources/fabric.mod.json` и
+  `data/oldlegends_gametest/gametest/structure/road_arena.snbt`
+  — пустой тестовый объём 48×16×48;
+- `src/gametest/java/com/oldlegends/gametest/RoadServerGameTests.java`
+  — 9 тестов: настоящие дорожные NBT, 4 направления прямой,
+  мост по воде, сундук с BlockEntity, маркер road_corner,
+  атомарный отказ повреждённого RoadEnd и сохранение legacy;
+- `docs/ROAD-SERVER-GAMETEST-PILOT-2026-10-22.md` —
+  условия запуска через IntelliJ IDEA. Обычный `runClient` оставлен прежним.
+
+**Важное юридическое/техническое ограничение:** Minecraft EULA не была
+принята от имени пользователя: `eula=false` по умолчанию; только после
+ознакомления и согласия владельца можно передать
+`-Pgametest_eula_accepted=true` в Gradle run configuration.
+Работа GameTest для Minecraft 26.3 / Loom 1.17.18 /
+Fabric API 0.161.0+26.3 требует подтверждения Java25 сборкой.
+
+**Доказательства:** 10/10 статических проверок связности Gradle/манифеста/
+source set/аннотаций/площадки/защиты EULA — PASS.
+**НЕ запускались** Java25 build, сервер GameTest, Python/Java
+предыдущего #72, Minecraft gameplay, B1–B8; 9 GameTest написаны,
+но пока НЕ являются девятью PASS.
+GitHub Actions не запускались вручную, пользовательские миры не тронуты.
+
+**Точка продолжения:** JDK25 + Gradle Sync в IntelliJ, локальная
+компиляция тестового source set и запуск `build` с EULA-согласием
+в отдельной тестовой папке. Разобрать реальные ошибки, проверить
+все девять результатов, затем дополнить негативные сценарии и B1–B8.
+Без слияний в `main` до разрешения владельца. Release First соблюдён.
