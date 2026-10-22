@@ -1002,3 +1002,36 @@ Survival-мир не использовать.
 **Не выполнялось:** merge в main, слияние исходных PR,
 автогенерация построек, переход в мир сна, замена архива/склепа,
 изменение пользовательских сохранений.
+
+
+## 30. КТ — 22.10.2026: единая тестовая ветка мебели и восьми NBT
+
+По прямому согласию владельца «Давай объединённую» подготовлен
+[FOL Draft PR #78](https://github.com/Anwite/four_old_legends/pull/78):
+`test/lik-soviet-interior-combined-2026-10-22`,
+основан на PR #76 и содержит все **34 файла из PR #74**;
+конфликтующих путей между обоими PR нет. В наличии четыре новых
+Creative-предмета (стол, стул, чашка, фотография игрока)
+и восемь крупных советских NBT (4 здания × `abandoned/dream`).
+Все неизменённые импорты сверены по SHA: 32/34;
+две Java-модели мебели и рамки адаптированы к Minecraft 26.3.
+
+**Обнаруженное важное исправление:** Minecraft 26.3 удалил
+`Block.codec()`. Поэтому устаревшие `MapCodec` методы
+из `InteriorFurnitureBlock` и `PhotoFrameBlock` удалены
+в объединённой тестовой ветке. **PR #74 остаётся неизменённым и
+потребует отдельного переноса фикса перед merge.**
+
+Добавлены `scripts/check_combined_preview.py` и
+[инструкция](https://github.com/Anwite/four_old_legends/blob/test/lik-soviet-interior-combined-2026-10-22/docs/COMBINED-PREVIEW-REC-0003-LIK-SOVIET-2026-10-22.md)
+для GitHub Desktop → Fetch/ветка → IntelliJ Play с JDK25 →
+**только новый Creative Superflat-мир** →
+`/legends interior test`, `/place template ...`.
+
+**Важно:** наличие кода/ассетов и статические проверки Git tree
+не равны рабочей компиляции. Gradle JDK25, Minecraft26.3,
+отображение скина, визуальная проходимость **NOT RUN**.
+Не использовать основной мир. `main`, оригинальные PR,
+архив/склеп не изменены, Actions не запускались.
+
+[Отдельный документ КТ №30](https://github.com/IskraFOL/iskrafol-hub/blob/docs/kt-road-2-0-audit-close-1-3-0-2026-10-21/docs/KT-2026-10-22-COMBINED-PREVIEW-INTERIOR-AND-LIK-SOVIET.md).
