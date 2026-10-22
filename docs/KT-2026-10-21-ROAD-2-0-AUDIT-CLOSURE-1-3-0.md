@@ -604,3 +604,39 @@ IntelliJ IDEA / отдельном тестовом мире; результат
 
 Протокол Release First: новые механики не создавались; не сливать без
 разрешения владельца.
+
+
+## 22. КТ — утверждение постоянной возможности автотестов Minecraft, 22.10.2026
+
+**Явное поручение владельца:** продолжать эксперимент с Fabric GameTest и
+**запомнить как долгосрочную возможность IskraFOL автоматическое
+тестирование Minecraft-модов без виртуальной машины**. Наличие этой
+возможности должно учитываться при дальнейшем планировании ROAD, ARG,
+диктофона, остановки и других проектов. Реализация отдельных тестов
+не является доказательством успешного выполнения.
+
+Каноническая запись:
+[ISKRAFOL-AUTOMATED-MINECRAFT-TESTING-PROTOCOL.md](https://github.com/IskraFOL/iskrafol-hub/blob/docs/kt-road-2-0-audit-close-1-3-0-2026-10-21/docs/ISKRAFOL-AUTOMATED-MINECRAFT-TESTING-PROTOCOL.md).
+Путь рассчитан на будущие разговоры и другие проекты, не только этот аудит.
+
+**Новый этап [Four Old Legends Draft PR #73](https://github.com/Anwite/four_old_legends/pull/73)**
+(ветка `test/road-server-gametest-26-3-2026-10-22`):
+- 14 GameTest уже написаны: 11 ROAD + 3 проверки ARG/реестра предметов.
+- Добавлен `scripts/check_gametest_preflight.py` — проверка без
+  виртуальной машины, Minecraft и EULA: 14 методов, два GameTest entrypoint,
+  Gradle, отсутствие EULA auto-accept, три оригинальных NBT и корректность
+  контрольных клеток (AIR-кромка, маркер угла, стык, полотно моста).
+- Инструкция разбита на стадии: Python preflight → JDK25 Gradle
+  `compileGametestJava` (после Gradle Sync) → `build` с явным согласием
+  на Minecraft EULA → реальные результаты 14 GameTest.
+- Всё перечисленное пока **НЕ запускалось** на Minecraft 26.3 в этом
+  сеансе; Java 25 недоступна в среде ассистента. Название Gradle-задачи
+  уточняется через локальный Gradle Sync.
+- Официальное руководство Fabric по автоматизации:
+  https://docs.fabricmc.net/develop/automatic-testing .
+- Клиентский GameTest для клавиши R, UI диктофона, озвучки/субтитров,
+  ItemDisplay и визуального стенда — **второй этап**, не обещаем рендер
+  от серверного GameTest.
+- Приоритет Release First сохраняется; оригинальные миры пользователя,
+  `main`, Draft PR #70/#72, опубликованная 1.2.0 и квота Actions
+  не затрагиваются. Слияния только по разрешению владельца.
